@@ -23,7 +23,7 @@ async function main() {
   // Sinalizamos que estamos usando JSON no Body
   app.use(express.json())
 
-  // Endpoint [GET] /temperatura - READ ALL (Ler todos os temperatura)
+  // Endpoint [GET] /sensor - READ ALL (Ler todo os sensores de temperatura)
   app.get('/sensor', async function (req, res) {
     // Leio todos os documentos da collection
     const item = req.body
@@ -38,18 +38,20 @@ async function main() {
     }
   })
 
-  // Endpoint [GET] /itens/:id - READ BY ID (Ler pelo ID)
+  // Endpoint [GET] /sensor/:id - READ BY ID (Ler um determinado sensor de temperatura)
   app.get('/sensor/:id', async function (req, res) {
     // Pegamos o parâmetro de rota ID
     const id = req.params.id
+    const tipo = req.body.tipo
 
     // Realizamos uma busca no banco de dados
     const item = await collection.findOne({
-      _id: parseInt(id)
+      _id: parseInt(id),
+      tipo: req.body.tipo
     })
 
     if (item) res.send(item)
-    else res.send('id nao encontrado')
+    else res.status(500).send('Sensor nao encontrado')
 
     // Exibimos o item encontrado
   })

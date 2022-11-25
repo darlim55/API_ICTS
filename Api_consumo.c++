@@ -45,6 +45,7 @@ void listar_sensores(int tipo, string T = "", int id = 0)
   CURL *curl;
   CURLcode res;
   json j = {};
+  int http_code;
   std::string readBuffer;
   std::string body = "{ \"tipo\": \"" + T + "\" }";
   std::string path_full = opcoes(tipo, id);
@@ -68,22 +69,39 @@ void listar_sensores(int tipo, string T = "", int id = 0)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     res = curl_easy_perform(curl);
-    curl_easy_cleanup(curl);
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
 
+    curl_easy_cleanup(curl);
     // Lista os sensores encontrados no banco de dados
 
-    if (T == "T")
-      cout << "Sensores de temperatura" << endl;
-    else
-      cout << "Sensores de Consumo" << endl;
-
-    json j_complete = nlohmann::json::parse(readBuffer);
-
-    if (tipo == 1)
+    if (http_code != 500)
     {
-      for (json its : j_complete)
+      if (T == "T")
+        cout
+            << "Sensores de temperatura" << endl;
+      else
+        cout << "Sensores de Consumo" << endl;
+
+      json j_complete = nlohmann::json::parse(readBuffer);
+
+      if (tipo == 1)
       {
-        for (json::iterator it = its.begin(); it != its.end(); ++it)
+        for (json its : j_complete)
+        {
+          for (json::iterator it = its.begin(); it != its.end(); ++it)
+          {
+            if (it.key() == "_id")
+              std::cout << "id"
+                        << " : " << it.value() << "\n";
+            else
+              std::cout << it.key() << " : " << it.value() << "\n";
+          }
+          std::cout << std::endl;
+        }
+      }
+      else if (tipo == 2)
+      {
+        for (json::iterator it = j_complete.begin(); it != j_complete.end(); ++it)
         {
           if (it.key() == "_id")
             std::cout << "id"
@@ -94,17 +112,10 @@ void listar_sensores(int tipo, string T = "", int id = 0)
         std::cout << std::endl;
       }
     }
-    else if (tipo == 2)
+    else
     {
-      for (json::iterator it = j_complete.begin(); it != j_complete.end(); ++it)
-      {
-        if (it.key() == "_id")
-          std::cout << "id"
-                    << " : " << it.value() << "\n";
-        else
-          std::cout << it.key() << " : " << it.value() << "\n";
-      }
-      std::cout << std::endl;
+      cout << readBuffer << endl;
+      cout << endl;
     }
   }
 }
