@@ -54,6 +54,8 @@ Os comando a baixo servem para linux e vscode.
 Digite o seguinte comando no cmd para instalar a biblioteca do curl:
 > sudo apt install curl
 
+> sudo apt install libcurl4-openssl-dev
+
 Digite o seguinte comando no cmd para gerar o executavel:
 > c++ Api_consumo.c++ -lcurl -o get-data
 
