@@ -211,6 +211,7 @@ void altera_nome(int tipo, string nome, int id = 0)
     // curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     res = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
+    cout << endl;
   }
 }
 
@@ -246,6 +247,7 @@ void altera_disposicao(int tipo, int disposicao, int id = 0)
     // curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     res = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
+    cout << endl;
   }
 }
 

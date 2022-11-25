@@ -56,7 +56,7 @@ async function main() {
     // Exibimos o item encontrado
   })
 
-  // Endpoint [GET] /itens/:id - READ BY ID (Ler pelo ID)
+  // Endpoint [GET] /itens/:id - READ BY ID (pega dados de sensor de consumo)
   app.get('/sensor_consumo', async function (req, res) {
     // Pegamos o parâmetro de rota ID
     const id = req.params.id
@@ -72,31 +72,37 @@ async function main() {
     // Exibimos o item encontrado
   })
 
-  // Endpoint [PUT] /itens/:id - UPDATE BY ID (Atualizar pelo ID)
+  // Endpoint [PUT] /sensor_update/:id - UPDATE BY ID (Atualizar nome pelo id)
   app.put('/sensor_update/:id', async function (req, res) {
     // Pegamos o parâmetro de rota ID
     const id = req.params.id
-
     // Pegamos o objeto enviado no body
+    const verifica_id = await collection.findOne({
+      _id: parseInt(id),
+      tipo: req.body.tipo
+    })
     const item = req.body
-    if (id) {
+    if (verifica_id) {
       // Atualizamos o item no banco de dados
       await collection.updateOne(
         { _id: parseInt(id) },
         { $set: { nome: item.nome } }
       )
       res.send('Item atualizado com sucesso!')
-    } else res.send('id nao encontrado')
+    } else res.status(500).send('ID nao encontrado')
   })
 
   // Endpoint [PUT] /itens/:id - UPDATE BY ID (Atualizar pelo ID)
   app.put('/sensor_update_disposicao/:id', async function (req, res) {
     // Pegamos o parâmetro de rota ID
     const id = req.params.id
-
+    const verifica_id = await collection.findOne({
+      _id: parseInt(id),
+      tipo: req.body.tipo
+    })
     // Pegamos o objeto enviado no body
     const item = req.body
-    if (id) {
+    if (verifica_id) {
       if (item.disposicao == true) {
         await collection.updateOne(
           { _id: parseInt(id) },
@@ -109,7 +115,7 @@ async function main() {
         )
       }
       res.send('Disposicao atualizada com sucesso!')
-    } else res.send('id nao encontrado')
+    } else res.status(500).send('ID nao encontrado')
   })
 
   app.listen(process.env.PORT || 3000, function () {
