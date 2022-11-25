@@ -60,6 +60,8 @@ Digite o seguinte comando no cmd para gerar o executavel:
 Apos gerar o executável digite no cmd:
 > ./get-data 
 
+**Para roda no windows seguir os comandos: https://www.alura.com.br/artigos/compilando-executando-programas-c-c-windows.**
+
 **Para rodar localmente o servidor e o código você precisara de 2 cmd's que devem estar dentro da pasta do repositório para os comandos funcionarem.**
 
 **Obs: Lembrando que precisa-se instalar as bibliotecas do c++ no vscode e linux e estar dentro da pasta do projeto para os comandos funcionarem.**
