@@ -113,7 +113,7 @@ async function main() {
   })
 
   app.listen(process.env.PORT || 3000, function () {
-    console.log(process.env.PORT)
+    console.log('http://127.0.0.1:3000')
   })
 }
 
